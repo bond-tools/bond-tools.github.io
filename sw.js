@@ -13,7 +13,7 @@
 
 /** @type {{url: string, hash: string}[]} */
 const PRECACHE = [{"url":"/app/settings/index.html","hash":"25ab04e55e904c6f"},{"url":"/app/share/index.html","hash":"77a07cf4e9288691"},{"url":"/assets/archivo-latin-400-normal-C81ewxNO.woff2","hash":"07f9160163da2ec0"},{"url":"/assets/archivo-latin-500-normal-CGugC8dq.woff2","hash":"ab74eca5ad115fe4"},{"url":"/assets/archivo-latin-600-normal-3BBy0ZsW.woff2","hash":"d9e8c29fdd348edd"},{"url":"/assets/archivo-latin-700-normal-D9cHMWGj.woff2","hash":"abada6cd4c92a9a7"},{"url":"/assets/IBMPlexMono-Medium-Latin1-CfBEoGIJ.woff2","hash":"41201b658a328b9d"},{"url":"/assets/IBMPlexMono-Regular-Latin1-DYPusg7z.woff2","hash":"e8993d946649b9d0"},{"url":"/assets/placeholder-DCt0NaFY.css","hash":"d4b99a8ca11ad5a7"},{"url":"/assets/placeholder-DkWrITIN.js","hash":"418c206484b89b68"},{"url":"/doc-scanner/index.html","hash":"991174292e2691c8"},{"url":"/expense-log/index.html","hash":"4146e79e0126aea4"},{"url":"/index.html","hash":"c09af2cc60070d90"},{"url":"/manifest.webmanifest","hash":"8d86aadcae2607b3"},{"url":"/qr-card/index.html","hash":"7bebe947505799f2"},{"url":"/robots.txt","hash":"331ea9090db0c9f6"},{"url":"/sign-and-fill/index.html","hash":"ea8caeb68b17f201"}];
-const BUILD_ID = "0.1.0+3cd2ec3.2026-11-11";
+const BUILD_ID = "0.1.0+f7a4b7d.2026-11-11";
 
 const CACHE_PREFIX = 'tools-build-';
 const CACHE_NAME = CACHE_PREFIX + BUILD_ID;
