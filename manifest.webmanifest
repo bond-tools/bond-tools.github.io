@@ -1,0 +1,36 @@
+{
+  "id": "/",
+  "name": "Tools",
+  "short_name": "Tools",
+  "description": "Document scanner, QR card, expense log and sign-and-fill. Everything stays on this device.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#E7ECED",
+  "theme_color": "#0B6E78",
+  "lang": "en",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Scanner", "short_name": "Scanner", "url": "/doc-scanner/", "icons": [{ "src": "/icons/shortcut-scanner-96.png", "sizes": "96x96", "type": "image/png" }] },
+    { "name": "QR card", "short_name": "QR card", "url": "/qr-card/", "icons": [{ "src": "/icons/shortcut-card-96.png", "sizes": "96x96", "type": "image/png" }] },
+    { "name": "Expense log", "short_name": "Expenses", "url": "/expense-log/", "icons": [{ "src": "/icons/shortcut-expenses-96.png", "sizes": "96x96", "type": "image/png" }] }
+  ],
+  "share_target": {
+    "action": "/app/share/receive",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "files",
+          "accept": ["image/*", "application/pdf", ".jpg", ".jpeg", ".png", ".webp", ".heic", ".pdf"]
+        }
+      ]
+    }
+  }
+}
