@@ -12,8 +12,8 @@
  */
 
 /** @type {{url: string, hash: string}[]} */
-const PRECACHE = [{"url":"/app/settings/index.html","hash":"25ab04e55e904c6f"},{"url":"/app/share/index.html","hash":"77a07cf4e9288691"},{"url":"/assets/archivo-latin-400-normal-C81ewxNO.woff2","hash":"07f9160163da2ec0"},{"url":"/assets/archivo-latin-500-normal-CGugC8dq.woff2","hash":"ab74eca5ad115fe4"},{"url":"/assets/archivo-latin-600-normal-3BBy0ZsW.woff2","hash":"d9e8c29fdd348edd"},{"url":"/assets/archivo-latin-700-normal-D9cHMWGj.woff2","hash":"abada6cd4c92a9a7"},{"url":"/assets/IBMPlexMono-Medium-Latin1-CfBEoGIJ.woff2","hash":"41201b658a328b9d"},{"url":"/assets/IBMPlexMono-Regular-Latin1-DYPusg7z.woff2","hash":"e8993d946649b9d0"},{"url":"/assets/placeholder-DCt0NaFY.css","hash":"d4b99a8ca11ad5a7"},{"url":"/assets/placeholder-DkWrITIN.js","hash":"418c206484b89b68"},{"url":"/doc-scanner/index.html","hash":"991174292e2691c8"},{"url":"/expense-log/index.html","hash":"4146e79e0126aea4"},{"url":"/index.html","hash":"c09af2cc60070d90"},{"url":"/manifest.webmanifest","hash":"8d86aadcae2607b3"},{"url":"/qr-card/index.html","hash":"7bebe947505799f2"},{"url":"/robots.txt","hash":"331ea9090db0c9f6"},{"url":"/sign-and-fill/index.html","hash":"ea8caeb68b17f201"}];
-const BUILD_ID = "0.1.0+f7a4b7d.2026-11-11";
+const PRECACHE = [{"url":"/app/settings/index.html","hash":"7be667c16b6b63be"},{"url":"/app/share/index.html","hash":"b41ffe02cf7798e8"},{"url":"/assets/archivo-latin-400-normal-C81ewxNO.woff2","hash":"07f9160163da2ec0"},{"url":"/assets/archivo-latin-500-normal-CGugC8dq.woff2","hash":"ab74eca5ad115fe4"},{"url":"/assets/archivo-latin-600-normal-3BBy0ZsW.woff2","hash":"d9e8c29fdd348edd"},{"url":"/assets/archivo-latin-700-normal-D9cHMWGj.woff2","hash":"abada6cd4c92a9a7"},{"url":"/assets/backup-BgKKnVbH.js","hash":"cce2e36c40dd3dc2"},{"url":"/assets/coming-ChJsoUKE.css","hash":"24d1918f79ce94c7"},{"url":"/assets/coming-CxWUI-Qd.js","hash":"8fc9fdc2870e764e"},{"url":"/assets/IBMPlexMono-Medium-Latin1-CfBEoGIJ.woff2","hash":"41201b658a328b9d"},{"url":"/assets/IBMPlexMono-Regular-Latin1-DYPusg7z.woff2","hash":"e8993d946649b9d0"},{"url":"/assets/inbox-Czugqkq5.js","hash":"507723549974bd07"},{"url":"/assets/incoming-CDwqfWnA.js","hash":"eaf08c90856cbd16"},{"url":"/assets/launcher-BDKqw69Y.js","hash":"aa561ab84b116c79"},{"url":"/assets/launcher-C1RZApzm.css","hash":"cac57dff629bb42d"},{"url":"/assets/page-CAFftNWF.js","hash":"47d2a6a2a45aba3c"},{"url":"/assets/page-Di5jCSKJ.css","hash":"166398fbc5fe4777"},{"url":"/assets/reach-BmyiDXDU.js","hash":"87cd80b61691cc7f"},{"url":"/assets/scanner-BeL4Nrfd.css","hash":"a6512629882ed9a0"},{"url":"/assets/scanner-r4F5A_Mc.js","hash":"20ba21aa59598a5e"},{"url":"/assets/settings-DK0Fdb9y.js","hash":"d93e9ee1b6b8ad8c"},{"url":"/assets/settings-kZtIkZbj.css","hash":"ee4d370fd190afd6"},{"url":"/assets/share-CcYEYH1O.css","hash":"b4a1dfa00b283361"},{"url":"/assets/share-CY5KsSK_.js","hash":"cfb058004c8adc35"},{"url":"/assets/tools-AoK7GdGH.js","hash":"4652607dddc116d2"},{"url":"/assets/worker-CsI4wp_i.js","hash":"27e9d0eee12db932"},{"url":"/doc-scanner/index.html","hash":"13b4dda575a24bb5"},{"url":"/expense-log/index.html","hash":"07ae16bb39e6de64"},{"url":"/icons/icon-192.png","hash":"7ce6ef9092c7e0d5"},{"url":"/icons/icon-512.png","hash":"ac3e9fe717d18561"},{"url":"/icons/icon-maskable-512.png","hash":"9b26cce36ac706cf"},{"url":"/icons/shortcut-card-96.png","hash":"dd6a2402751e4401"},{"url":"/icons/shortcut-expenses-96.png","hash":"275311cf3d0a1790"},{"url":"/icons/shortcut-scanner-96.png","hash":"8187a77f82056ab3"},{"url":"/index.html","hash":"68ceb912f99ca335"},{"url":"/licences/archivo-licence.txt","hash":"c3c8402eec0e31dc"},{"url":"/licences/ibm-plex-mono-licence.txt","hash":"37784b44044a4ffd"},{"url":"/manifest.webmanifest","hash":"8d86aadcae2607b3"},{"url":"/qr-card/index.html","hash":"b1fa4cf3f44eeeda"},{"url":"/robots.txt","hash":"331ea9090db0c9f6"},{"url":"/sign-and-fill/index.html","hash":"d5a3d0f357a6732b"}];
+const BUILD_ID = "0.1.0+c6ca0df.2026-11-12";
 
 const CACHE_PREFIX = 'tools-build-';
 const CACHE_NAME = CACHE_PREFIX + BUILD_ID;
@@ -86,24 +86,37 @@ async function fromCache(request) {
 
 /** Files shared into the app arrive as a form POST that only the service worker can read. */
 async function receiveShare(request) {
+  // What did not arrive, for the landing page to say: a share that lost files without a word
+  // would read as "it is all in the app now".
+  let missed = 0;
+  let unread = false;
   try {
     const form = await request.formData();
     const cache = await caches.open(INCOMING_CACHE);
-    const files = form.getAll('files').filter((value) => typeof value !== 'string');
+    // A form sent with no file chosen still carries one part: an unnamed file of no bytes. That
+    // is nothing shared, and listing it would show a "shared-file, 0 B" that never existed.
+    const files = form.getAll('files').filter((value) => typeof value !== 'string' && (value.size > 0 || value.name));
     for (const file of files) {
-      const id = self.crypto.randomUUID();
-      const headers = new Headers({
-        'Content-Type': file.type || 'application/octet-stream',
-        'Content-Length': String(file.size),
-        'X-Tools-Name': encodeURIComponent(file.name || 'shared-file'),
-        'X-Tools-Received': String(Date.now()),
-      });
-      await cache.put('/__incoming/' + id, new Response(file, { headers }));
+      try {
+        const id = self.crypto.randomUUID();
+        const headers = new Headers({
+          'Content-Type': file.type || 'application/octet-stream',
+          'Content-Length': String(file.size),
+          'X-Tools-Name': encodeURIComponent(file.name || 'shared-file'),
+          'X-Tools-Received': String(Date.now()),
+        });
+        await cache.put('/__incoming/' + id, new Response(file, { headers }));
+      } catch {
+        // One file that cannot be kept (a full device) does not cost the ones after it.
+        missed++;
+      }
     }
   } catch {
-    // Fall through: the landing page shows "nothing arrived" rather than an error page.
+    unread = true;
   }
-  return Response.redirect(SHARE_LANDING, 303);
+  // Always the landing page, never an error page. app/src/share-in.ts reads `missed`.
+  const told = unread ? '?missed=all' : missed > 0 ? '?missed=' + missed : '';
+  return Response.redirect(SHARE_LANDING + told, 303);
 }
 
 self.addEventListener('fetch', (event) => {

@@ -1,0 +1,1 @@
+function e(e){return e.bodiesIn===`blobs`}export{e as t};
